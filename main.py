@@ -65,41 +65,39 @@ def fluxo_cadastro(conexao):
         if admin == "0":
             return
 
+        tipo_usuario = "cliente"
+
         if admin.lower() == "s":
             while True:
                 senha_admin_input = input("Digite a senha de admin para confirmar: ")
 
                 if senha_admin_input == "0":
                     return
+
                 if not verificar_admin(senha_admin_input):
                     print("Senha de admin incorreta. Tente novamente.")
                     continue
 
                 print("prosseguindo com cadastro como admin...")
 
-                try:
-                    cadastrar_usuario(conexao, nome, email, senha, "admin")
-                except Exception as err:
-                    print(f"Erro ao salvar usuário: {err}")
-                    return
-                else:
-                    print("\nUsuário cadastrado com sucesso!")
-                    return
+                tipo_usuario = "admin"
+                break
 
         elif admin.lower() == "n":
             print("prosseguindo com cadastro como cliente...")
 
-            try:
-                cadastrar_usuario(conexao, nome, email, senha, "cliente")
-            except Exception as err:
-                print(f"Erro ao salvar usuário: {err}")
-                return
-            else:
-                print("\nUsuário cadastrado com sucesso!")
-                return
-
         else:
-            print("Opção inválida.")
+            print("Opção inválida. Por favor, digite 's' para sim ou 'n' para não.")
+            continue
+
+        try:
+            cadastrar_usuario(conexao, nome, email, senha, tipo_usuario)
+        except Exception as err:
+            print(f"Erro ao salvar usuário: {err}")
+            return
+        else:
+            print("\nUsuário cadastrado com sucesso!")
+            return
 
 
 def fluxo_login(conexao):
