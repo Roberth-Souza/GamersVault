@@ -1,4 +1,4 @@
-/*-- 1. Cria o banco de dados do gamer vault e entra nele
+-- 1. Cria o banco de dados do gamer vault e entra nele
 CREATE DATABASE gamers_vault;
 USE gamers_vault;
 
@@ -66,4 +66,4 @@ CREATE TABLE item_pedido (
     CONSTRAINT fk_itempedido_jogo
         FOREIGN KEY (id_jogo_pedido_fk) REFERENCES jogos(id_jogo)
         ON DELETE RESTRICT ON UPDATE CASCADE
-);*/
+);
