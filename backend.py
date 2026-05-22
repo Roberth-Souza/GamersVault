@@ -1,4 +1,8 @@
-# ruff : noqa
+"""Backend do Gamer's Vault.
+
+Gerenciamento de usuários, fornecedores, produtos e pedidos.
+"""
+
 import re
 import bcrypt
 import random
@@ -7,7 +11,6 @@ from datetime import datetime
 senha_admin = "admin123"
 
 # --- VALIDAÇÕES ---
-
 
 def validar_id(id_input):
 
