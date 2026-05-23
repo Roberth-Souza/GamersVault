@@ -3,18 +3,25 @@
 Gerenciamento de usuários, fornecedores, produtos e pedidos.
 """
 
-import re
-import bcrypt
 import random
+import re
 from datetime import datetime
+
+import bcrypt
 
 senha_admin = "admin123"
 
+# -- Constantes --
+
+TAMANHO_MAX_CATEGORIA = 50
+TAMANHO_MIN_SENHA = 4
+
 # --- VALIDAÇÕES ---
+
 
 def validar_id(id_input):
 
-    if not id_input or id_input.strip() == "":
+    if not id_input or not id_input.strip():
         raise ValueError("O ID não pode ser vazio.")
 
     if not id_input.isdigit():
@@ -26,7 +33,7 @@ def validar_id(id_input):
 
 def validar_data(data_input):
 
-    if not data_input or data_input.strip() == "":
+    if not data_input or not data_input.strip():
         raise ValueError("A data não pode ser vazia.")
 
     try:
@@ -43,19 +50,19 @@ def validar_data(data_input):
 
 def validar_site(site):
 
-    if not site or site.strip() == "":
+    if not site or not site.strip():
         raise ValueError("O site não pode ser vazio.")
 
-    if not site.startswith("www"):
-        raise ValueError('O site deve começar com "www".')
+    if not site.startswith("www."):
+        raise ValueError('O site deve começar com "www.".')
 
-    if "." not in site[3:]:
+    if "." not in site[4:]:
         raise ValueError("O site deve conter um domínio válido.")
 
 
 def validar_preco(preco_input):
 
-    if not preco_input or preco_input.strip() == "":
+    if not preco_input or not preco_input.strip():
         raise ValueError("O preço não pode ser vazio.")
 
     if not re.match(r"^\d+(\.\d{1,2})?$", preco_input):
@@ -64,16 +71,16 @@ def validar_preco(preco_input):
 
 def validar_categoria(categoria):
 
-    if not categoria or categoria.strip() == "":
+    if not categoria or not categoria.strip():
         raise ValueError("A categoria não pode ser vazia.")
 
-    if len(categoria) > 50:
-        raise ValueError("A categoria não pode ter mais de 50 caracteres.")
+    if len(categoria) > TAMANHO_MAX_CATEGORIA:
+        raise ValueError(f"A categoria não pode ter mais de {TAMANHO_MAX_CATEGORIA} caracteres.")
 
 
 def validar_nome(nome):
 
-    if not nome or nome.strip() == "":
+    if not nome or not nome.strip():
         raise ValueError("O nome não pode ser vazio.")
 
     for e in nome:
@@ -83,13 +90,13 @@ def validar_nome(nome):
 
 def validar_email(email):
 
-    if not email or email.strip() == "":
+    if not email or not email.strip():
         raise ValueError("O email não pode ser vazio.")
 
     if "@" not in email:
         raise ValueError('O email deve conter "@" para ser válido.')
 
-    if not "." in email.split("@")[-1]:
+    if "." not in email.split("@")[-1]:
         raise ValueError("O domínio do email deve conter um ponto (ex: exemplo.com).")
 
     if email.count("@") > 1:
@@ -116,11 +123,12 @@ def verificar_email_existente_usuario(conexao, email):
 
 def validar_senha_usuario(senha):
 
-    if not senha or senha.strip() == "":
+    if not senha or not senha.strip():
         raise ValueError("A senha não pode ser vazia.")
 
-    if len(senha) <= 3:
-        raise ValueError("A senha deve conter pelo menos 4 caracteres.")
+    if len(senha) < TAMANHO_MIN_SENHA:
+        raise ValueError(f"A senha deve conter pelo menos {TAMANHO_MIN_SENHA} caracteres.")
+
     return True
 
 
@@ -214,8 +222,7 @@ def listar_usuarios(conexao):
         cursor.execute(
             "SELECT id_usuario, nome_usuario, email_usuario, tipo_usuario, saldo FROM usuarios"
         )
-        usuarios = cursor.fetchall()
-        return usuarios
+        return cursor.fetchall()
     finally:
         if cursor:
             cursor.close()
@@ -226,6 +233,7 @@ def deletar_usuario(conexao, id_usuario):
 
     if not usuario:
         raise ValueError("ID não encontrado ou inválido.")
+
     if usuario["tipo"] == "admin":
         raise ValueError("Não é permitido deletar um usuário administrador.")
 
@@ -244,6 +252,7 @@ def promover_usuario(conexao, id_usuario):
 
     if not usuario:
         raise ValueError("ID não encontrado ou inválido.")
+
     if usuario["tipo"] == "admin":
         raise ValueError("O usuário já é um administrador.")
 
@@ -304,8 +313,7 @@ def listar_fornecedores(conexao):
         cursor.execute(
             "SELECT id_fornecedor, nome_fornecedor, email_fornecedor FROM fornecedores"
         )
-        fornecedores = cursor.fetchall()
-        return fornecedores
+        return cursor.fetchall()
     finally:
         if cursor:
             cursor.close()
@@ -410,7 +418,7 @@ def buscar_jogo_por_id(conexao, id_jogo):
             """
             SELECT id_jogo, id_fornecedor_fk, nome_jogo, categoria_jogo, data_lancamento_jogo, 
                    descricao_jogo, preco_base_jogo, tamanho_download_jogo, url_download_jogo 
-            FROM jogos 
+            FROM jogos
             WHERE id_jogo = %s
         """,
             (id_jogo,),
@@ -524,8 +532,7 @@ def listar_jogos_ordenados_por_preco(conexao, descendente=False):
             FROM jogos
             ORDER BY preco_base_jogo {ordem}
         """)
-        jogos = cursor.fetchall()
-        return jogos
+        return cursor.fetchall()
     finally:
         if cursor:
             cursor.close()
@@ -584,13 +591,12 @@ def listar_jogos_por_categoria(conexao, categoria):
             """
             SELECT id_jogo, id_fornecedor_fk, nome_jogo, categoria_jogo, data_lancamento_jogo, 
                    descricao_jogo, preco_base_jogo, tamanho_download_jogo, url_download_jogo 
-            FROM jogos 
+            FROM jogos
             WHERE categoria_jogo LIKE %s
         """,
             (f"%{categoria}%",),
         )
-        jogos = cursor.fetchall()
-        return jogos
+        return cursor.fetchall()
     finally:
         if cursor:
             cursor.close()
