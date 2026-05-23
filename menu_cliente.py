@@ -1,17 +1,17 @@
-# ruff : noqa
+"""Arquivo responsável por implementar as funcionalidades do menu do cliente."""
 
 from backend import (
-    buscar_fornecedor_por_id,
-    listar_jogos,
-    listar_fornecedores,
-    listar_jogos_ordenados_por_preco,
-    consultar_saldo_atual,
-    buscar_jogo_por_id,
-    registrar_pedido_com_itens,
-    listar_pedidos,
     buscar_detalhes_pedido,
-    validar_id,
+    buscar_fornecedor_por_id,
+    buscar_jogo_por_id,
+    consultar_saldo_atual,
+    listar_fornecedores,
+    listar_jogos,
+    listar_jogos_ordenados_por_preco,
     listar_jogos_por_categoria,
+    listar_pedidos,
+    registrar_pedido_com_itens,
+    validar_id,
 )
 
 
@@ -47,7 +47,7 @@ def fluxo_compra(conexao, usuario_logado, carrinho_sessao):
         print("Jogo não encontrado com esse ID.")
         return
 
-    print(f"\n--- Detalhes do Jogo ---")
+    print("\n--- Detalhes do Jogo ---")
     print(f"\nID: {jogo_encontrado['id']}")
     print(f"Nome: {jogo_encontrado['nome']}")
     print(f"Categoria: {jogo_encontrado['categoria']}")
@@ -114,7 +114,7 @@ def menu_cliente(usuario_logado, conexao):
                     "\nDigite a categoria que deseja buscar (ex: RPG, FPS, Puzzle): "
                 )
 
-                if categoria.strip() == "":
+                if not categoria.strip():
                     print("Erro: Digite uma categoria válida.")
                 else:
                     jogos = listar_jogos_por_categoria(conexao, categoria)
@@ -156,7 +156,7 @@ def menu_cliente(usuario_logado, conexao):
                         jogos = listar_jogos(conexao, id_fornecedor=id_fornecedor)
 
                         if jogos:
-                            print(f"\n--- Jogos do Fornecedor ---")
+                            print("\n--- Jogos do Fornecedor ---")
                             imprimir_tabela_jogos(jogos)
                             fluxo_compra(conexao, usuario_logado, carrinho_sessao)
                         else:
@@ -260,7 +260,7 @@ def menu_cliente(usuario_logado, conexao):
             print("3. cartao_debito")
             print("4. boleto")
 
-            opcao_pgto = input("Escolha a forma de pagamento: ")
+            opcao_pgto = input("\nEscolha a forma de pagamento: ")
             formas_map = {
                 "1": "pix",
                 "2": "cartao_credito",
