@@ -14,11 +14,14 @@ from backend import (
     deletar_usuario,
     editar_fornecedor,
     editar_jogo,
+    fornecedor_tem_jogos_em_pedidos,
     listar_fornecedores,
     listar_jogos,
     listar_pedidos,
     listar_usuarios,
     promover_usuario,
+    jogo_tem_pedidos,
+    usuario_tem_pedidos,
     validar_categoria,
     validar_cnpj,
     validar_data,
@@ -296,6 +299,13 @@ def menu_admin(usuario_logado, conexao):
 
                     if id_usuario is not None:
                         try:
+                            pedidos_usuario = usuario_tem_pedidos(conexao, id_usuario)
+                            if pedidos_usuario > 0:
+                                print(
+                                    f"\nERRO: Não é possível deletar. Este usuário está vinculado a {pedidos_usuario} pedido(s)."
+                                )
+                                continue
+
                             deletar_usuario(conexao, id_usuario)
                             print("Usuário deletado com sucesso.")
 
@@ -425,6 +435,13 @@ def menu_admin(usuario_logado, conexao):
                     try:
                         jogo_encontrado = buscar_jogo_por_id(conexao, id_alvo)
                         if jogo_encontrado:
+                            pedidos_jogo = jogo_tem_pedidos(conexao, id_alvo)
+                            if pedidos_jogo > 0:
+                                print(
+                                    f"\nERRO: Não é possível deletar. Este jogo está vinculado a {pedidos_jogo} pedido(s)."
+                                )
+                                continue
+
                             confirmacao = input(f"Deseja realmente deletar o jogo '{jogo_encontrado['nome']}'? (s/n): ")
                             if confirmacao.lower() == 's':
                                 deletar_jogo(conexao, id_alvo)
@@ -671,6 +688,13 @@ def menu_admin(usuario_logado, conexao):
 
                 if id_alvo is not None:
                     try:
+                        pedidos_fornecedor = fornecedor_tem_jogos_em_pedidos(conexao, id_alvo)
+                        if pedidos_fornecedor > 0:
+                            print(
+                                f"\nERRO: Não é possível deletar. Os jogos deste fornecedor estão presentes em {pedidos_fornecedor} pedido(s)."
+                            )
+                            continue
+
                         deletar_fornecedor(conexao, id_alvo, forcar_cascata=False)
                         print("Fornecedor deletado com sucesso!")
                     except ValueError as err:

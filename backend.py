@@ -228,6 +228,25 @@ def listar_usuarios(conexao):
             cursor.close()
 
 
+def usuario_tem_pedidos(conexao, id_usuario):
+    cursor = None
+    try:
+        cursor = conexao.cursor()
+        cursor.execute(
+            """
+            SELECT COUNT(DISTINCT id_pedido)
+            FROM pedidos
+            WHERE id_usuario_pedido_fk = %s
+        """,
+            (id_usuario,),
+        )
+        resultado = cursor.fetchone()
+        return resultado[0] if resultado and resultado[0] is not None else 0
+    finally:
+        if cursor:
+            cursor.close()
+
+
 def deletar_usuario(conexao, id_usuario):
     usuario = buscar_usuario_por_id(conexao, id_usuario)
 
@@ -291,6 +310,26 @@ def buscar_fornecedor_por_id(conexao, id_fornecedor):
                 "site": resultado[4],
             }
         return None
+    finally:
+        if cursor:
+            cursor.close()
+
+
+def fornecedor_tem_jogos_em_pedidos(conexao, id_fornecedor):
+    cursor = None
+    try:
+        cursor = conexao.cursor()
+        cursor.execute(
+            """
+            SELECT COUNT(DISTINCT ip.id_pedido_fk)
+            FROM item_pedido ip
+            JOIN jogos j ON ip.id_jogo_pedido_fk = j.id_jogo
+            WHERE j.id_fornecedor_fk = %s
+        """,
+            (id_fornecedor,),
+        )
+        resultado = cursor.fetchone()
+        return resultado[0] if resultado and resultado[0] is not None else 0
     finally:
         if cursor:
             cursor.close()
@@ -437,6 +476,26 @@ def buscar_jogo_por_id(conexao, id_jogo):
                 "url": resultado[8],
             }
         return None
+    finally:
+        if cursor:
+            cursor.close()
+
+
+def jogo_tem_pedidos(conexao, id_jogo):
+
+    cursor = None
+    try:
+        cursor = conexao.cursor()
+        cursor.execute(
+            """
+            SELECT COUNT(DISTINCT id_pedido_fk)
+            FROM item_pedido
+            WHERE id_jogo_pedido_fk = %s
+        """,
+            (id_jogo,),
+        )
+        resultado = cursor.fetchone()
+        return resultado[0] if resultado and resultado[0] is not None else 0
     finally:
         if cursor:
             cursor.close()

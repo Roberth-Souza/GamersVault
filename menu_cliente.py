@@ -281,7 +281,7 @@ def menu_cliente(usuario_logado, conexao):
                             carrinho_sessao,
                             forma_pagamento_escolhido,
                         )
-                        print(f"\nPedido {pedido_id} realizado com sucesso!")
+                        print("\nPedido realizado com sucesso!")
                         carrinho_sessao.clear()
                     except ValueError as e:
                         print(f"\nErro ao finalizar compra: {e}")
