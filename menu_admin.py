@@ -1,34 +1,36 @@
-# ruff : noqa
+"""Arquivo responsável por implementar as funcionalidades do menu do administrador."""
+
 
 from backend import (
+    alterar_status_pedido,
+    buscar_detalhes_pedido,
+    buscar_fornecedor_por_id,
+    buscar_jogo_por_id,
+    buscar_usuario_por_id,
+    cadastrar_fornecedor,
     cadastrar_jogo,
+    deletar_fornecedor,
+    deletar_jogo,
+    deletar_usuario,
+    editar_fornecedor,
+    editar_jogo,
+    listar_fornecedores,
+    listar_jogos,
+    listar_pedidos,
+    listar_usuarios,
+    promover_usuario,
+    validar_categoria,
+    validar_cnpj,
     validar_data,
-    validar_nome,
     validar_email,
+    validar_id,
+    validar_nome,
     validar_preco,
     validar_site,
-    validar_cnpj,
-    validar_id,
-    validar_categoria,
     verificar_admin,
-    listar_usuarios,
-    buscar_usuario_por_id,
-    deletar_usuario,
-    promover_usuario,
-    listar_fornecedores,
-    cadastrar_fornecedor,
-    buscar_fornecedor_por_id,
-    editar_fornecedor,
-    deletar_fornecedor,
-    listar_jogos,
-    buscar_jogo_por_id,
-    deletar_jogo,
-    editar_jogo,
     verificar_email_existente_fornecedor,
-    listar_pedidos,
-    buscar_detalhes_pedido,
-    alterar_status_pedido
 )
+
 
 def fluxo_cadastrar_jogo(conexao):
     print("\n--- Cadastrar Jogo ---")
@@ -38,8 +40,8 @@ def fluxo_cadastrar_jogo(conexao):
 
         if nome == '0':
             return
-        
-        elif nome.strip() == "":
+
+        if not nome.strip():
             print("Erro: O nome do jogo não pode ser vazio.")
 
         else:
@@ -77,7 +79,7 @@ def fluxo_cadastrar_jogo(conexao):
     fornecedores = listar_fornecedores(conexao)
     for fornecedor in fornecedores:
         print(f"ID: {fornecedor[0]}, Nome: {fornecedor[1]}, Email: {fornecedor[2]}")
-    
+
     while True:
         id_fornecedor = input("\nDigite o ID do fornecedor do jogo ou '0' para cancelar: ")
 
@@ -94,9 +96,9 @@ def fluxo_cadastrar_jogo(conexao):
 
         except ValueError as err:
             print(f"Erro no ID do fornecedor: {err}")
-    
+
     while True:
-        data_lancamento = input("Digite a data de lançamento do jogo (formato YYYY-MM-DD) ou '0' para cancelar: ")
+        data_lancamento = input("\nDigite a data de lançamento do jogo (formato YYYY-MM-DD) ou '0' para cancelar: ")
         if data_lancamento == '0':
             return
         try:
@@ -104,12 +106,12 @@ def fluxo_cadastrar_jogo(conexao):
             break
         except ValueError as err:
             print(f"Erro na data de lançamento: {err}")
-    
+
     while True:
-        tamanho_jogo = input("Digite o tamanho do jogo em GB (ex: 15.5) ou '0' para cancelar: ")
+        tamanho_jogo = input("\nDigite o tamanho do jogo em GB (ex: 15.5) ou '0' para cancelar: ")
         if tamanho_jogo == '0':
             return
-        
+
         try:
             tamanho_float = float(tamanho_jogo)
             if tamanho_float <= 0:
@@ -119,14 +121,14 @@ def fluxo_cadastrar_jogo(conexao):
 
         except ValueError:
             print("Erro: Tamanho do jogo deve ser um número válido (ex: 15.5).")
-    
+
     tamanho = f"{float(tamanho_jogo):.2f}GB"
 
     while True:
-        url_download_jogo = input("Digite a URL de download do jogo ou '0' para cancelar: ")
+        url_download_jogo = input("\nDigite a URL de download do jogo ou '0' para cancelar: ")
         if url_download_jogo == '0':
             return
-        
+
         try:
             validar_site(url_download_jogo)
             break
@@ -139,13 +141,14 @@ def fluxo_cadastrar_jogo(conexao):
 
     if vai_ter_descricao.lower() == "s":
         descricao = input("Digite a descrição do jogo: ")
-    
+
     try:
         cadastrar_jogo(conexao, id_fornecedor, nome, categoria, data_lancamento, preco, tamanho, url_download_jogo, descricao)
         print("Jogo cadastrado com sucesso!")
 
     except Exception as err:
         print(f"Erro ao cadastrar jogo: {err}")
+
 
 def fluxo_cadastrar_fornecedor(conexao):
     print("\n--- Cadastrar Fornecedor (Digite '0' em qualquer campo para cancelar) ---")
@@ -161,7 +164,7 @@ def fluxo_cadastrar_fornecedor(conexao):
             print(f"Erro no nome: {err}")
 
     while True:
-        email = input("Digite o email do fornecedor: ")
+        email = input("\nDigite o email do fornecedor: ")
         if email == '0':
             return
         try:
@@ -187,7 +190,7 @@ def fluxo_cadastrar_fornecedor(conexao):
         vai_ter_site = input("O fornecedor possui site? (s/n): ")
         if vai_ter_site == '0':
             return
-        
+
         if vai_ter_site.lower() == "s":
 
             while True:
@@ -219,19 +222,23 @@ def fluxo_cadastrar_fornecedor(conexao):
         else:
             print("Opção inválida.")
 
+
 def fluxo_pede_id(mensagem):
     while True:
         id_digitado = input(mensagem)
         if id_digitado == '0':
             return None
         try:
-            validar_id(id_digitado) 
+            validar_id(id_digitado)
             return id_digitado
         except ValueError as err:
             print(f"Erro: {err}\n")
 
+
 def mostrar_detalhes_jogo(jogo):
-    print(f"\n--- Detalhes do Jogo ---")
+
+    print("\n--- Detalhes do Jogo ---")
+    print("")
     print(f"ID: {jogo['id']}")
     print(f"Fornecedor ID: {jogo['id_fornecedor']}")
     print(f"Nome: {jogo['nome']}")
@@ -244,7 +251,9 @@ def mostrar_detalhes_jogo(jogo):
 
 
 def menu_admin(usuario_logado, conexao):
+
     while True:
+
         print("\n--- Menu do Administrador ---")
         print("\n1. Gerenciar Usuários")
         print("2. Gerenciar Jogos")
@@ -252,7 +261,7 @@ def menu_admin(usuario_logado, conexao):
         print("4. Gerenciar Fornecedores")
         print("0. Sair")
 
-        escolha = input("Escolha uma opção: ")
+        escolha = input("\nEscolha uma opção: ")
 
         if escolha == "1":
             print("\nGerenciando usuários...")
@@ -261,27 +270,27 @@ def menu_admin(usuario_logado, conexao):
             print("3 - Promover usuário")
             print("4 - Buscar usuário por ID")
             print("0 - Voltar ao menu anterior")
-            opcao_usuario= input("Escolha uma opção: ")
+            opcao_usuario = input("\nEscolha uma opção: ")
 
-            if opcao_usuario == "1":              
+            if opcao_usuario == "1":
                 usuarios = listar_usuarios(conexao)
                 print("\n--- Lista de Usuários ---")
                 print("")
                 for usuario in usuarios:
                     print(f"ID: {usuario[0]}, Nome: {usuario[1]}, Email: {usuario[2]}, Tipo: {usuario[3]}, Saldo: {usuario[4]}")
-            
+
             elif opcao_usuario == "2":
                 usuarios = listar_usuarios(conexao)
                 clientes = [user for user in usuarios if user[3] == "cliente"]
-                
+
                 if not clientes:
-                    print("\nNão há clientes cadastrados no banco, \ne não é possivel deletar admins")
+                    print("\nNão há clientes cadastrados no banco \ne não é possivel deletar admins")
                 else:
                     print("\n--- Lista de Usuários (Clientes) ---")
                     print("")
                     for usuario in clientes:
                         print(f"ID: {usuario[0]}, Nome: {usuario[1]}, Email: {usuario[2]}, Tipo: {usuario[3]}, Saldo: {usuario[4]}")
-                    
+
                     print("\n --- Deletar Usuário ---")
                     id_usuario = fluxo_pede_id("Digite o ID do usuário que deseja deletar (ou '0' para cancelar): ")
 
@@ -295,11 +304,11 @@ def menu_admin(usuario_logado, conexao):
 
                         except Exception as err:
                             print(f"Erro inesperado no banco ao deletar: {err}")
-            
+
             elif opcao_usuario == "3":
                 usuarios = listar_usuarios(conexao)
                 clientes = [user for user in usuarios if user[3] == "cliente"]
-                
+
                 if not clientes:
                     print("\nNão há clientes cadastrados no banco, \ne não é possivel promover admins")
                 else:
@@ -310,7 +319,7 @@ def menu_admin(usuario_logado, conexao):
 
                     print("\n --- Promover Usuário ---")
                     id_usuario = fluxo_pede_id("Digite o ID do usuário que deseja promover a administrador (ou '0' para cancelar): ")
-                    
+
                     if id_usuario is not None:
                         try:
                             promover_usuario(conexao, id_usuario)
@@ -321,28 +330,29 @@ def menu_admin(usuario_logado, conexao):
 
                         except Exception as err:
                             print(f"Erro inesperado no banco ao promover: {err}")
-            
+
             elif opcao_usuario == "4":
                 id_usuario = fluxo_pede_id("Digite o ID do usuário que deseja buscar (ou '0' para cancelar): ")
-                
+
                 if id_usuario is not None:
                     usuario = buscar_usuario_por_id(conexao, id_usuario)
                     if usuario:
                         print(f"\n--- Detalhes do Usuário ---")
+                        print("")
                         print(f"ID: {usuario['id']}")
                         print(f"Nome: {usuario['nome']}")
                         print(f"Email: {usuario['email']}")
                         print(f"Tipo: {usuario['tipo']}")
                         print(f"Saldo: {usuario['saldo']}")
                     else:
-                        print("Usuário não encontrado.") 
-            
+                        print("Usuário não encontrado.")
+
             elif opcao_usuario == "0":
                 continue
 
             else:
                 print("Opção inválida. Por favor, tente novamente.")
-            
+
         elif escolha == "2":
 
             fornecedores = listar_fornecedores(conexao)
@@ -357,14 +367,15 @@ def menu_admin(usuario_logado, conexao):
             print("4 - Editar jogo")
             print("5 - Buscar jogo por ID")
             print("0 - Voltar ao menu anterior")
-            opcao_produto = input("Escolha uma opção: ")
-        
+            opcao_produto = input("\nEscolha uma opção: ")
+
             if opcao_produto == "1":
                 print("Listando jogos...")
                 filtro = input("Deseja filtrar por fornecedor? (s/n): ")
-                
+
                 if filtro.lower() == "s":
                     print("\n--- Lista de Fornecedores ---")
+                    print("")
                     fornecedores_lista = listar_fornecedores(conexao)
                     for fornecedor in fornecedores_lista:
                         print(f"ID: {fornecedor[0]}, Nome: {fornecedor[1]}")
@@ -372,22 +383,22 @@ def menu_admin(usuario_logado, conexao):
                     id_fornecedor = fluxo_pede_id("\nDigite o ID do fornecedor (ou '0' para cancelar): ")
                     if id_fornecedor is None:
                         continue
-                    
+
                     fornecedor_encontrado = buscar_fornecedor_por_id(conexao, id_fornecedor)
-                    
+
                     if fornecedor_encontrado is None:
                         print("Erro: Fornecedor não encontrado com esse ID.")
                     else:
                         nome_do_fornecedor = fornecedor_encontrado["nome"]
                         jogos = listar_jogos(conexao, id_fornecedor=id_fornecedor)
-                        
+
                         if not jogos:
                             print(f"\nO fornecedor {nome_do_fornecedor} ainda não tem jogos cadastrados.")
                         else:
                             print(f"\n--- Jogos do Fornecedor: {nome_do_fornecedor} ---")
                             for jogo in jogos:
                                 print(f"ID: {jogo[0]}, Nome: {jogo[2]}, Preço: R${jogo[6]}")
-                                
+
                 else:
                     print("\n--- Todos os Jogos ---")
                     jogos = listar_jogos(conexao)
@@ -397,19 +408,20 @@ def menu_admin(usuario_logado, conexao):
                         print("")
                         for jogo in jogos:
                             print(f"ID: {jogo[0]}, Nome: {jogo[2]}, Preço: R${jogo[6]}")
-            
+
             elif opcao_produto == "2":
                 fluxo_cadastrar_jogo(conexao)
 
             elif opcao_produto == "3":
                 print("\n--- Deletar Jogo ---")
-                jogos =  listar_jogos(conexao)
+                jogos = listar_jogos(conexao)
                 for jogo in jogos:
                     print(f"ID: {jogo[0]}, Nome: {jogo[2]}, Preço: R${jogo[6]}")
 
                 id_alvo = fluxo_pede_id("Digite o ID do jogo que deseja deletar (0 para cancelar): ")
-                
+
                 if id_alvo is not None:
+
                     try:
                         jogo_encontrado = buscar_jogo_por_id(conexao, id_alvo)
                         if jogo_encontrado:
@@ -423,13 +435,13 @@ def menu_admin(usuario_logado, conexao):
                             print("Jogo não encontrado.")
                     except Exception as err:
                         print(f"Erro inesperado no banco ao deletar: {err}")
-            
+
             elif opcao_produto == "4":
                 print("\n--- Editar Jogo ---")
                 jogos = listar_jogos(conexao)
                 for jogo in jogos:
                     print(f"ID: {jogo[0]}, Nome: {jogo[2]}, Preço: R${jogo[6]}")
-                    
+
                 id_alvo = fluxo_pede_id("\nDigite o ID do jogo que deseja editar (0 para cancelar): ")
 
                 if id_alvo is not None:
@@ -437,11 +449,11 @@ def menu_admin(usuario_logado, conexao):
                     if jogo_encontrado is None:
                         print("Jogo não encontrado!")
                         continue
-                    
+
                     mostrar_detalhes_jogo(jogo_encontrado)
                     print(f"\nEditando Jogo: {jogo_encontrado['nome']}")
                     print("Qual campo você deseja alterar?")
-                    print("1 - Nome")
+                    print("\n1 - Nome")
                     print("2 - Categoria")
                     print("3 - Preço")
                     print("4 - Data de lançamento")
@@ -450,32 +462,32 @@ def menu_admin(usuario_logado, conexao):
                     print("7 - Descrição")
                     print("0 - Cancelar")
 
-                    escolha_campo = input("Escolha: ")
+                    escolha_campo = input("\nEscolha: ")
 
                     try:
                         if escolha_campo == "1":
                             novo_nome = input("Digite o novo nome: ")
                             validar_nome(novo_nome)
                             editar_jogo(conexao, id_alvo, "nome", novo_nome)
-                            print("Nome atualizado com sucesso!")
+                            print("\nNome atualizado com sucesso!")
                         
                         elif escolha_campo == "2":
                             nova_categoria = input("Digite a nova categoria: ")
                             validar_categoria(nova_categoria)
                             editar_jogo(conexao, id_alvo, "categoria", nova_categoria)
-                            print("Categoria atualizada com sucesso!")
+                            print("\nCategoria atualizada com sucesso!")
 
                         elif escolha_campo == "3":
                             novo_preco = input("Digite o novo preço (ex: 59.99) ou 0 para deixar gratuito: ")
                             validar_preco(novo_preco)
                             editar_jogo(conexao, id_alvo, "preco", novo_preco)
-                            print("Preço atualizado com sucesso!")
+                            print("\nPreço atualizado com sucesso!")
                         
                         elif escolha_campo == "4":
                             nova_data = input("Digite a nova data de lançamento (formato YYYY-MM-DD): ")
                             validar_data(nova_data)
                             editar_jogo(conexao, id_alvo, "data_lancamento", nova_data)
-                            print("Data de lançamento atualizada com sucesso!")
+                            print("\nData de lançamento atualizada com sucesso!")
                         
                         elif escolha_campo == "5":
                             novo_tamanho = input("Digite o novo tamanho em GB (ex: 15.5): ")
@@ -486,7 +498,7 @@ def menu_admin(usuario_logado, conexao):
                                 else:
                                     tamanho_formatado = f"{tamanho_float:.2f}GB"
                                     editar_jogo(conexao, id_alvo, "tamanho", tamanho_formatado)
-                                    print("Tamanho atualizado com sucesso!")
+                                    print("\nTamanho atualizado com sucesso!")
                             except ValueError:
                                 print("Erro: Tamanho do jogo deve ser um número válido (ex: 15.5).")
                         
@@ -494,12 +506,12 @@ def menu_admin(usuario_logado, conexao):
                             nova_url = input("Digite a nova URL de download: ")
                             validar_site(nova_url)
                             editar_jogo(conexao, id_alvo, "url", nova_url)
-                            print("URL de download atualizada com sucesso!")
+                            print("\nURL de download atualizada com sucesso!")
                         
                         elif escolha_campo == "7":
                             nova_descricao = input("Digite a nova descrição do jogo: ")
                             editar_jogo(conexao, id_alvo, "descricao", nova_descricao)
-                            print("Descrição atualizada com sucesso!")
+                            print("\nDescrição atualizada com sucesso!")
                         
                         elif escolha_campo == "0":
                             print("Edição cancelada.")
@@ -534,9 +546,9 @@ def menu_admin(usuario_logado, conexao):
             print("3 - Ver detalhes de um pedido específico")
             print("4 - Atualizar status do pedido")
             print("0 - Voltar")
-            
-            opcao_pedido = input("Escolha uma opção: ")
-            
+
+            opcao_pedido = input("\nEscolha uma opção: ")
+
             if opcao_pedido == "1":
                 pedidos = listar_pedidos(conexao)
                 if not pedidos:
@@ -547,25 +559,28 @@ def menu_admin(usuario_logado, conexao):
                     for p in pedidos:
                         v = float(p['valor']) if p['valor'] is not None else 0.0
                         print(f"{p['id_pedido']:<10} | {p['id_cliente']:<12} | {p['status']:<15} | R${v:<10.2f} | {p['data']}")
-            
+
             elif opcao_pedido == "2":
                 print("\n--- Lista de Clientes ---")
                 clientes = [u for u in listar_usuarios(conexao) if u[3] == "cliente"]
                 for c in clientes:
                     print(f"ID: {c[0]:<4} | Nome: {c[1]}")
-                    
+
                 id_cliente = input("\nDigite o ID do cliente para filtrar (ou 0 para cancelar): ")
                 if id_cliente != '0' and id_cliente.isdigit():
                     pedidos = listar_pedidos(conexao, id_usuario=int(id_cliente))
+
                     if not pedidos:
                         print("\nNenhum pedido encontrado para este cliente.")
+
                     else:
                         print(f"\n{'ID Pedido':<10} | {'Status':<15} | {'Valor (R$)':<10} | {'Data'}")
                         print("-" * 60)
+
                         for p in pedidos:
                             v = float(p['valor']) if p['valor'] is not None else 0.0
                             print(f"{p['id_pedido']:<10} | {p['status']:<15} | R${v:<10.2f} | {p['data']}")
-            
+
             elif opcao_pedido == "3":
                 id_pedido = input("\nDigite o ID do pedido para ver os detalhes (ou 0 para cancelar): ")
                 if id_pedido != '0' and id_pedido.isdigit():
@@ -586,7 +601,7 @@ def menu_admin(usuario_logado, conexao):
                             print(f"{item['nome_jogo'][:25]:<25} | {item['quantidade']:<4} | R${pi:.2f}")
                     else:
                         print("\nPedido não encontrado.")
-            
+
             elif opcao_pedido == "4":
                 id_pedido = input("\nDigite o ID do pedido para atualizar o status (ou 0 para cancelar): ")
                 if id_pedido != '0' and id_pedido.isdigit():
@@ -598,20 +613,20 @@ def menu_admin(usuario_logado, conexao):
                         print(f"Data: {detalhes['data']}")
                         v = float(detalhes['valor']) if detalhes['valor'] is not None else 0.0
                         print(f"Valor Total: R${v:.2f}")
-                        
+
                         print("\nEscolha o novo status:")
                         print("1 - Pago")
                         print("2 - Pendente")
                         print("3 - Cancelado")
                         print("0 - Cancelar operação")
-                        novo_status_opcao = input("Escolha: ")
-                        
+                        novo_status_opcao = input("\nEscolha: ")
+
                         status_map = {
                             "1": "pago",
                             "2": "pendente",
                             "3": "cancelado"
                         }
-                        
+
                         if novo_status_opcao in status_map:
                             novo_status = status_map[novo_status_opcao]
                             try:
@@ -625,7 +640,7 @@ def menu_admin(usuario_logado, conexao):
                             print("\nOpção de status inválida.")
                     else:
                         print("\nPedido não encontrado.")
-        
+
         elif escolha == "4":
             print("Gerenciando fornecedores...")
             print("\n1 - Listar fornecedores")
@@ -634,7 +649,7 @@ def menu_admin(usuario_logado, conexao):
             print("4 - Editar fornecedor")
             print("5 - Buscar fornecedor por ID")
             print("0 - Voltar ao menu anterior")
-            opcao_fornecedor = input("Escolha uma opção: ")
+            opcao_fornecedor = input("\nEscolha uma opção: ")
 
             if opcao_fornecedor == "1":
                 fornecedores = listar_fornecedores(conexao)
@@ -642,7 +657,7 @@ def menu_admin(usuario_logado, conexao):
                 print("")
                 for fornecedor in fornecedores:
                     print(f"ID: {fornecedor[0]}, Nome: {fornecedor[1]}, Email: {fornecedor[2]}")
-            
+
             elif opcao_fornecedor == "2":
                 fluxo_cadastrar_fornecedor(conexao)
 
@@ -651,9 +666,9 @@ def menu_admin(usuario_logado, conexao):
                 fornecedores = listar_fornecedores(conexao)
                 for fornecedor in fornecedores:
                     print(f"ID: {fornecedor[0]}, Nome: {fornecedor[1]}, Email: {fornecedor[2]}")
-                
+
                 id_alvo = fluxo_pede_id("\nDigite o ID do fornecedor que deseja deletar (0 para cancelar): ")
-                
+
                 if id_alvo is not None:
                     try:
                         deletar_fornecedor(conexao, id_alvo, forcar_cascata=False)
@@ -683,28 +698,28 @@ def menu_admin(usuario_logado, conexao):
 
             elif opcao_fornecedor == "4":
                 print("\n--- Editar Fornecedor ---")
-                
+
                 fornecedores = listar_fornecedores(conexao)
                 for f in fornecedores:
                     print(f"ID: {f[0]}, Nome: {f[1]}")
-                    
+
                 id_alvo = fluxo_pede_id("\nDigite o ID do fornecedor que deseja editar (0 para cancelar): ")
-                
+
                 if id_alvo is not None:
                     fornecedor_encontrado = buscar_fornecedor_por_id(conexao, id_alvo)
                     if fornecedor_encontrado is None:
                         print("Fornecedor não encontrado!")
                         continue
-                        
+
                     print(f"\nEditando Fornecedor: {fornecedor_encontrado['nome']}")
                     print("Qual campo você deseja alterar?")
                     print("\n1 - Nome")
                     print("2 - Email")
                     print("3 - Site")
                     print("0 - Cancelar")
-                    
-                    escolha_campo = input("Escolha: ")
-                    
+
+                    escolha_campo = input("\nEscolha: ")
+
                     try:
                         if escolha_campo == "1":
                             novo_nome = input("Digite o novo nome: ")
@@ -719,27 +734,27 @@ def menu_admin(usuario_logado, conexao):
                                 print("Erro: Este email já está em uso por outro fornecedor.")
                             else:
                                 editar_fornecedor(conexao, id_alvo, "email", novo_email)
-                                print("Email atualizado com sucesso!")
+                                print("\nEmail atualizado com sucesso!")
                             
                         elif escolha_campo == "3":
                             novo_site = input("Digite o novo site: ")
                             validar_site(novo_site)
                             editar_fornecedor(conexao, id_alvo, "site", novo_site)
-                            print("Site atualizado com sucesso!")
+                            print("\nSite atualizado com sucesso!")
                             
                         elif escolha_campo == "0":
-                            print("Edição cancelada.")
+                            print("\nEdição cancelada.")
                         else:
-                            print("Opção inválida.")
+                            print("\nOpção inválida.")
                             
                     except ValueError as err:
                         print(f"Erro na validação: {err}")
                     except Exception as err:
                         print(f"Erro no banco de dados: {err}")
-                        
+
             elif opcao_fornecedor == "5":
                 id_alvo = fluxo_pede_id("\nDigite o ID do fornecedor que deseja buscar (0 para cancelar): ")
-                
+
                 if id_alvo is not None:
                     fornecedor = buscar_fornecedor_por_id(conexao, id_alvo)
                     if fornecedor:
@@ -750,8 +765,8 @@ def menu_admin(usuario_logado, conexao):
                         print(f"CNPJ: {fornecedor['cnpj']}")
                         print(f"Site: {fornecedor['site']}")
                     else:
-                        print("Fornecedor não encontrado.")
-            
+                        print("\nFornecedor não encontrado.")
+
             elif opcao_fornecedor == "0":
                 print("Voltando ao menu anterior.")
                 continue
