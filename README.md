@@ -3,6 +3,13 @@
 Um sistema completo de loja de jogos digitais desenvolvido em Python com integração a um banco de dados MySQL. Este projeto simula uma plataforma robusta de distribuição virtual, contando com controle de acesso, criptografia de senhas, validações de dados e gerenciamento financeiro completo para clientes e administradores. 🚀
 
 ---
+## 📖 Documentação Completa
+
+Para um entendimento profundo da arquitetura, validações (Fail-fast/Regex), regras de estorno e diagramas de banco de dados, organizamos toda a engenharia de software em um diretório à parte.
+
+👉 **Para explorar os detalhes técnicos, leia a documentação completa aqui: [Acessar Índice de Documentação](docs/00-index.md)**
+
+---
 
 ## 🚀 Funcionalidades
 
@@ -71,7 +78,23 @@ O banco central relacional se chama `gamers_vault` e é moldado da seguinte form
 - Acesse o arquivo `conexao.py` em seu VS Code.
 - Altere os campos (como `user` e `password`) para os dados correspondentes à sua máquina.
 
-**4. Instale o Ambiente Python:**
+**4. Configurando o Ambiente Python (Virtual Environment)**
+Recomendamos o uso de ambientes virtuais para não sujar o seu sistema. Abra o terminal na raiz do Gamers Vault:
+
+Crie o ambiente virtual:
+```bash
+python3 -m venv .venv
+```
+
+Ative o ambiente virtual:
+* **Linux/Mac/CachyOS:**
+  ```bash
+  source .venv/bin/activate
+  ```
+* **Windows (PowerShell):**
+  ```powershell
+  .\.venv\Scripts\activate
+  ```
 No terminal, certifique-se de estar na pasta do projeto e rode:
 ```bash
 pip install -r requirements.txt
