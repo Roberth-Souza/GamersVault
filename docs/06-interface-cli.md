@@ -40,7 +40,7 @@ Com essa estrutura, aplicamos o conceito de *"Fail-Safe"*. O terminal vira um gu
 
 ---
 
-## 🛑 2. A Regra do "0" (Navegação de Fuga)
+## 🛑 2. A Regra do "0"
 
 Para que o usuário não se sinta preso em um beco sem saída caso inicie um cadastro sem querer ou não saiba qual dado inserir, definimos o número `0` como uma "Tecla de Escape Global".
 
