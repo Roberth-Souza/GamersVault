@@ -144,7 +144,7 @@
                         <p class="text-xs text-gray-400">Saldo</p>
                         <p class="font-bold text-purple-400">R$ 150,00</p>
                     </div>
-                    <button class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                    <button onclick="navigate('cart')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
                         <i class="ph ph-shopping-cart text-xl"></i>
                     </button>
                 </div>
@@ -197,11 +197,11 @@
                     <i class="ph-fill ph-house text-2xl"></i>
                     <span class="text-[10px] mt-1">Início</span>
                 </button>
-                <button class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
+                <button onclick="openSearch()" class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
                     <i class="ph ph-magnifying-glass text-2xl"></i>
                     <span class="text-[10px] mt-1">Busca</span>
                 </button>
-                <button class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
+                <button onclick="navigate('history')" class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
                     <i class="ph ph-clock-counter-clockwise text-2xl"></i>
                     <span class="text-[10px] mt-1">Histórico</span>
                 </button>
@@ -252,9 +252,64 @@
             </div>
         </div>
 
+        <!-- Cart Screen -->
+        <div id="screen-cart" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Meu Carrinho</h2>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto">
+                <p class="text-gray-400 text-center mt-10">Carrinho vazio no momento.</p>
+            </div>
+        </div>
+
+        <!-- History Screen -->
+        <div id="screen-history" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Histórico</h2>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto">
+                <p class="text-gray-400 text-center mt-10">Nenhum histórico encontrado.</p>
+            </div>
+        </div>
+
+        <!-- Search Modal -->
+        <div id="modal-search" class="hidden-screen absolute inset-0 bg-[#0b0914]/95 backdrop-blur-md z-50 flex flex-col">
+            <div class="p-6 flex items-center space-x-4">
+                <div class="flex-1 relative">
+                    <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                    <input type="text" placeholder="Buscar jogos..." class="w-full glass bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-purple-500 transition-colors text-white">
+                </div>
+                <button onclick="closeSearch()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 p-6">
+                <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Buscas Recentes</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">RPG</span>
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">Cyber</span>
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">Ação</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        function openSearch() {
+            document.getElementById('modal-search').classList.remove('hidden-screen');
+        }
+
+        function closeSearch() {
+            document.getElementById('modal-search').classList.add('hidden-screen');
+        }
+
         function navigate(screenId) {
             // Esconde todas as telas
             document.querySelectorAll('div[id^="screen-"]').forEach(el => {
