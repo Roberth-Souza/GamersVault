@@ -10,6 +10,9 @@ Selecione um dos tópicos abaixo para navegar:
 * **[2. Design de Produto e de Negócio](02-design-de-produto.md)**
   > Identidade visual, logotipo da plataforma e os princípios de UX aplicados para simular um ambiente amigável.
 
+* **[2.5. Protótipo Web e Interface de Usuário](02.5-prototipo.md)**
+  > Navegação do site, escolhas de design e apresentação do protótipo funcional para web (html/css)
+
 * **[3. Arquitetura e Engenharia do Sistema](03-arquitetura.md)**
   > Estrutura modular inspirada em MVC, encapsulamento e a separação de responsabilidades (View vs. Controller/Service).
 
