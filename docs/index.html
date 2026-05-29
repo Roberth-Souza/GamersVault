@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer's Vault - Protótipo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Cores baseadas no logo e identidade visual */
+        body {
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.06), transparent 10%), radial-gradient(900px 500px at 90% 90%, rgba(139,92,246,0.04), transparent 15%), #0b0914;
+            color: #ffffff;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        /* Efeito Glassmorphism */
+        .glass {
+            /* Dark glass: subtle translucent dark layer + backdrop blur */
+            background: linear-gradient(180deg, rgba(11,9,20,0.52), rgba(11,9,20,0.36));
+            backdrop-filter: blur(10px) saturate(120%);
+            -webkit-backdrop-filter: blur(10px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            background-clip: padding-box;
+        }
+        .input-glass {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(6px) saturate(110%);
+            -webkit-backdrop-filter: blur(6px) saturate(110%);
+        }
+        .btn-purple {
+            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+        }
+        /* Oculta as telas inativas */
+        .hidden-screen { display: none !important; }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md h-[800px] max-h-screen glass rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col">
+        
+        <div id="screen-login" class="flex-1 flex flex-col p-8 overflow-y-auto">
+            <div class="flex-1 flex flex-col justify-center">
+                <div class="flex justify-center mb-8">
+                    <div class="w-40 h-40 rounded-full flex items-center justify-center p-0 shadow-[0_0_30px_rgba(139,92,246,0.3)] overflow-hidden bg-transparent border-0">
+                        <img src="images/Logov2.jpeg" alt="Gamers Vault logo" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-center mb-2">Gamer's Vault</h1>
+                <p class="text-gray-400 text-center mb-8">Acesse seu cofre de jogos</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider">Email</label>
+                        <div class="relative mt-1">
+                            <i class="ph ph-envelope-simple absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                            <input type="email" placeholder="seu@email.com" class="w-full input-glass rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-purple-500 transition-colors">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider">Senha</label>
+                        <div class="relative mt-1">
+                            <i class="ph ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                            <input type="password" placeholder="••••••••" class="w-full input-glass rounded-xl py-3 pl-11 pr-11 focus:outline-none focus:border-purple-500 transition-colors">
+                            <i class="ph ph-eye absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center mt-2">
+                    <a href="#" onclick="alert('Funcionalidade de recuperação de senha ainda não implementada.')" class="text-purple-400 hover:text-purple-300 font-medium">Esqueceu sua senha?</a>
+                </p>
+
+                <button onclick="navigate('catalog')" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-3 mt-8 font-semibold transition-opacity shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+                    Entrar
+                </button>
+                
+                <p class="text-center text-sm text-gray-400 mt-6">
+                    Não tem conta? <a href="#" onclick="navigate('register')" class="text-purple-400 hover:text-purple-300 font-medium">Criar conta</a>
+                </p>
+            </div>
+        </div>
+
+        <div id="screen-register" class="hidden-screen flex-1 flex flex-col p-6 overflow-y-auto">
+            <button onclick="navigate('login')" class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors w-fit mb-6 glass px-4 py-2 rounded-lg">
+                <i class="ph ph-arrow-left"></i>
+                <span>Voltar</span>
+            </button>
+
+            <h2 class="text-2xl font-bold mb-1">Criar conta</h2>
+            <p class="text-gray-400 text-sm mb-6">Preencha os dados abaixo</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wider">Nome</label>
+                    <div class="relative mt-1">
+                        <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="text" placeholder="Seu nome completo" class="w-full input-glass rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-purple-500 transition-colors">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wider">Email</label>
+                    <div class="relative mt-1">
+                        <i class="ph ph-envelope-simple absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="email" placeholder="seu@email.com" class="w-full input-glass rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-purple-500 transition-colors">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wider">Senha</label>
+                    <div class="relative mt-1">
+                        <i class="ph ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="password" placeholder="••••••••" class="w-full input-glass rounded-xl py-3 pl-11 pr-11 focus:outline-none focus:border-purple-500 transition-colors">
+                        <i class="ph ph-eye absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg cursor-pointer"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wider">Confirmar Senha</label>
+                    <div class="relative mt-1">
+                        <i class="ph ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="password" placeholder="••••••••" class="w-full input-glass rounded-xl py-3 pl-11 pr-11 focus:outline-none focus:border-purple-500 transition-colors">
+                        <i class="ph ph-check absolute right-4 top-1/2 -translate-y-1/2 text-purple-500 text-lg"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="navigate('login')" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-3 mt-8 font-semibold flex items-center justify-center space-x-2">
+                <i class="ph ph-user-plus text-lg"></i>
+                <span>Criar conta</span>
+            </button>
+            <p class="text-center text-sm text-gray-400 mt-6 pb-4">
+                Já tem conta? <a href="#" onclick="navigate('login')" class="text-purple-400 hover:text-purple-300 font-medium">Entrar</a>
+            </p>
+        </div>
+
+        <div id="screen-catalog" class="hidden-screen flex-1 flex flex-col h-full">
+            <div class="p-6 pb-4 glass border-b-0 rounded-t-[2.5rem] flex justify-between items-center z-10">
+                <div>
+                    <p class="text-xs text-gray-400">Bem-vindo,</p>
+                    <p class="font-bold">Usuario</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400">Saldo</p>
+                        <p class="font-bold text-purple-400">R$ 150,00</p>
+                    </div>
+                    <button onclick="navigate('cart')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                        <i class="ph ph-shopping-cart text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                <h2 class="text-xl font-bold">Catálogo de Jogos</h2>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="openGameDetails('Cyber Explorer', 'R$ 59,90', 'RPG', 'Explore uma cidade futurista cheia de mistérios, facções perigosas e tecnologia avançada. Suas escolhas definem o destino da metrópole.')" class="glass rounded-2xl p-3 cursor-pointer hover:border-purple-500 transition-colors group">
+                        <div class="w-full h-32 rounded-xl mb-3 bg-gradient-to-br from-purple-900/50 to-gray-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <i class="ph ph-game-controller text-4xl text-purple-400/50"></i>
+                        </div>
+                        <p class="text-xs text-purple-400 mb-1">RPG</p>
+                        <h3 class="font-bold text-sm truncate">Cyber Explorer</h3>
+                        <p class="text-sm font-semibold mt-1">R$ 59,90</p>
+                    </div>
+
+                    <div onclick="openGameDetails('Galactic Wars', 'R$ 89,99', 'FPS', 'Um jogo de tiro em primeira pessoa no espaço. Lute contra impérios alienígenas usando armas de plasma e gravidade zero.')" class="glass rounded-2xl p-3 cursor-pointer hover:border-purple-500 transition-colors group">
+                        <div class="w-full h-32 rounded-xl mb-3 bg-gradient-to-br from-blue-900/50 to-gray-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <i class="ph ph-rocket text-4xl text-blue-400/50"></i>
+                        </div>
+                        <p class="text-xs text-purple-400 mb-1">FPS</p>
+                        <h3 class="font-bold text-sm truncate">Galactic Wars</h3>
+                        <p class="text-sm font-semibold mt-1">R$ 89,99</p>
+                    </div>
+
+                    <div onclick="openGameDetails('Vault Breaker', 'R$ 29,50', 'Puzzle', 'Use lógica e raciocínio rápido para invadir os cofres mais seguros do mundo neste desafiador jogo de quebra-cabeças.')" class="glass rounded-2xl p-3 cursor-pointer hover:border-purple-500 transition-colors group">
+                        <div class="w-full h-32 rounded-xl mb-3 bg-gradient-to-br from-green-900/50 to-gray-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <i class="ph ph-lock-key-open text-4xl text-green-400/50"></i>
+                        </div>
+                        <p class="text-xs text-purple-400 mb-1">Puzzle</p>
+                        <h3 class="font-bold text-sm truncate">Vault Breaker</h3>
+                        <p class="text-sm font-semibold mt-1">R$ 29,50</p>
+                    </div>
+
+                    <div onclick="openGameDetails('Medieval Clash', 'R$ 0,00', 'Estratégia', 'Construa seu império, treine exércitos e conquiste reinos vizinhos neste jogo de estratégia em tempo real totalmente gratuito.')" class="glass rounded-2xl p-3 cursor-pointer hover:border-purple-500 transition-colors group">
+                        <div class="w-full h-32 rounded-xl mb-3 bg-gradient-to-br from-red-900/50 to-gray-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <i class="ph ph-sword text-4xl text-red-400/50"></i>
+                        </div>
+                        <p class="text-xs text-purple-400 mb-1">Estratégia</p>
+                        <h3 class="font-bold text-sm truncate">Medieval Clash</h3>
+                        <p class="text-sm font-semibold mt-1 text-green-400">Gratuito</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 glass border-t-0 rounded-b-[2.5rem] flex justify-around items-center">
+                <button class="text-purple-400 flex flex-col items-center">
+                    <i class="ph-fill ph-house text-2xl"></i>
+                    <span class="text-[10px] mt-1">Início</span>
+                </button>
+                <button onclick="openSearch()" class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
+                    <i class="ph ph-magnifying-glass text-2xl"></i>
+                    <span class="text-[10px] mt-1">Busca</span>
+                </button>
+                <button onclick="navigate('history')" class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
+                    <i class="ph ph-clock-counter-clockwise text-2xl"></i>
+                    <span class="text-[10px] mt-1">Histórico</span>
+                </button>
+                <button onclick="navigate('profile')" class="text-gray-500 hover:text-purple-400 transition-colors flex flex-col items-center">
+                    <i class="ph ph-user text-2xl"></i>
+                    <span class="text-[10px] mt-1">Perfil</span>
+                </button>
+                <button onclick="navigate('login')" class="text-gray-500 hover:text-red-400 transition-colors flex flex-col items-center">
+                    <i class="ph ph-sign-out text-2xl"></i>
+                    <span class="text-[10px] mt-1">Sair</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-details" class="hidden-screen flex-1 flex flex-col h-full bg-[#0b0914] z-20">
+            <div class="relative h-64 bg-gradient-to-b from-purple-900/60 to-[#0b0914] flex flex-col justify-between p-6">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 z-10 text-white">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <i class="ph ph-game-controller text-8xl text-white/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+            </div>
+
+            <div class="flex-1 px-6 -mt-6 relative z-10 flex flex-col">
+                <div class="glass p-5 rounded-2xl mb-6 shadow-xl">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span id="detail-category" class="text-xs font-semibold px-2 py-1 bg-purple-500/20 text-purple-400 rounded-md">RPG</span>
+                            <h2 id="detail-title" class="text-2xl font-bold mt-2">Cyber Explorer</h2>
+                        </div>
+                        <button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                            <i class="ph ph-heart text-xl"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Lançamento: 15 Out 2024 • 45GB</p>
+                    
+                    <h3 class="font-bold mb-2 text-lg">Descrição</h3>
+                    <p id="detail-desc" class="text-gray-300 text-sm leading-relaxed">
+                        Explore uma cidade futurista cheia de mistérios, facções perigosas e tecnologia avançada. Suas escolhas definem o destino da metrópole.
+                    </p>
+                </div>
+
+                <div class="mt-auto pb-6">
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <span class="text-gray-400">Preço Total</span>
+                        <span id="detail-price" class="text-2xl font-bold text-white">R$ 59,90</span>
+                    </div>
+                    <button onclick="alert('Pedido registrado e enviado para o backend!')" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-4 font-bold text-lg transition-opacity shadow-[0_0_20px_rgba(139,92,246,0.3)] flex items-center justify-center space-x-2">
+                        <i class="ph ph-bag-simple text-xl"></i>
+                        <span>Finalizar Compra</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Screen -->
+        <div id="screen-cart" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Meu Carrinho</h2>
+            </div>
+            
+            <div class="flex-1 p-6 overflow-y-auto space-y-4">
+                <!-- Cart Item 1 -->
+                <div class="glass p-4 rounded-2xl flex items-center space-x-4 relative group">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-900/50 to-gray-800 flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-game-controller text-2xl text-purple-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-sm">Cyber Explorer</h3>
+                        <p class="text-xs text-gray-400">Edição Digital</p>
+                        <p class="text-sm font-semibold text-purple-400 mt-1">R$ 59,90</p>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center hover:bg-red-500/20 transition-colors">
+                        <i class="ph ph-trash"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="glass p-4 rounded-2xl flex items-center space-x-4 relative group">
+                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-900/50 to-gray-800 flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-rocket text-2xl text-blue-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-sm">Galactic Wars</h3>
+                        <p class="text-xs text-gray-400">Passe de Expansão</p>
+                        <p class="text-sm font-semibold text-blue-400 mt-1">R$ 89,99</p>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center hover:bg-red-500/20 transition-colors">
+                        <i class="ph ph-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cart Footer / Checkout -->
+            <div class="p-6 glass border-t-0 rounded-t-[2.5rem] mt-auto">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-400">Subtotal</span>
+                    <span class="font-semibold">R$ 149,89</span>
+                </div>
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-gray-400">Taxas e Impostos</span>
+                    <span class="font-semibold text-green-400">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between items-center mb-6 border-t border-white/10 pt-4">
+                    <span class="font-bold text-lg">Total</span>
+                    <span class="font-bold text-2xl text-purple-400">R$ 149,89</span>
+                </div>
+                <button onclick="navigate('checkout')" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-4 font-bold text-lg transition-opacity flex items-center justify-center space-x-2">
+                    <span>Ir para o Pagamento</span>
+                    <i class="ph ph-arrow-right font-bold mt-0.5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Checkout Screen -->
+        <div id="screen-checkout" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('cart')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Pagamento</h2>
+            </div>
+            
+            <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                <!-- Payment Method Selection -->
+                <div>
+                    <h3 class="font-bold mb-4">Escolha a Forma de Pagamento</h3>
+                    <div class="space-y-3">
+                        <label class="glass p-4 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500 transition-colors border border-purple-500 relative bg-white/5">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-[#32BCAD]/20 text-[#32BCAD] flex items-center justify-center">
+                                    <i class="ph ph-pix-logo text-2xl"></i>
+                                </div>
+                                <span class="font-medium">Pix</span>
+                            </div>
+                            <input type="radio" name="payment" class="w-4 h-4 text-purple-600 bg-transparent border-gray-500 focus:ring-purple-500 focus:ring-2" checked>
+                        </label>
+                        
+                        <label class="glass p-4 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500 transition-colors border border-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center">
+                                    <i class="ph ph-credit-card text-2xl"></i>
+                                </div>
+                                <span class="font-medium">Cartão de Crédito</span>
+                            </div>
+                            <input type="radio" name="payment" class="w-4 h-4 text-purple-600 bg-transparent border-gray-500 focus:ring-purple-500 focus:ring-2">
+                        </label>
+
+                        <label class="glass p-4 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500 transition-colors border border-transparent">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                                    <i class="ph ph-barcode text-2xl"></i>
+                                </div>
+                                <span class="font-medium">Boleto Bancário</span>
+                            </div>
+                            <input type="radio" name="payment" class="w-4 h-4 text-purple-600 bg-transparent border-gray-500 focus:ring-purple-500 focus:ring-2">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Wallet Balance Use -->
+                <div class="glass p-4 rounded-xl border border-white/5 flex items-center justify-between mt-4">
+                    <div>
+                        <p class="font-medium text-sm">Usar Saldo da Carteira</p>
+                        <p class="text-xs text-gray-400 mt-1">Saldo atual: R$ 150,00</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Confirm Button -->
+            <div class="p-6 glass border-t-0 rounded-t-[2.5rem] mt-auto">
+                <button onclick="finishCheckout()" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-4 font-bold text-lg transition-opacity flex items-center justify-center space-x-2">
+                    <i class="ph ph-check-circle text-xl"></i>
+                    <span>Confirmar Pagamento (R$ 149,89)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Success Modal (Used after checkout) -->
+        <div id="modal-success" class="hidden-screen absolute inset-0 bg-[#0b0914]/95 backdrop-blur-md z-50 flex items-center justify-center p-6">
+            <div class="glass p-8 rounded-[2.5rem] flex flex-col items-center max-w-sm w-full text-center scale-95 transition-transform animate-[popIn_0.3s_ease-out_forwards]">
+                <div class="w-20 h-20 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mb-6">
+                    <i class="ph ph-check text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Compra Concluída!</h3>
+                <p class="text-gray-400 mb-8">Seus jogos foram adicionados à sua biblioteca e estão prontos para download.</p>
+                <button onclick="closeSuccessAndGoHome()" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-3 font-semibold transition-opacity">
+                    Voltar ao Início
+                </button>
+            </div>
+        </div>
+
+        <!-- History Screen -->
+        <div id="screen-history" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Histórico</h2>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto">
+                <p class="text-gray-400 text-center mt-10">Nenhum histórico encontrado.</p>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="screen-profile" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('catalog')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Meu Perfil</h2>
+            </div>
+            
+            <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                <!-- Profile Header -->
+                <div class="flex flex-col items-center">
+                    <button class="w-24 h-24 rounded-full glass flex items-center justify-center overflow-hidden mb-3 relative group focus:outline-none" aria-label="Foto do usuário">
+                        <div class="w-full h-full flex items-center justify-center text-gray-300">
+                            <i class="ph ph-user text-6xl"></i>
+                        </div>
+                        <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="ph ph-camera text-xl text-white"></i>
+                        </div>
+                    </button>
+                    <h3 class="text-2xl font-bold">Usuario</h3>
+                    <button class="text-purple-400 text-sm mt-1 font-medium hover:text-purple-300">Alterar foto de perfil</button>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="space-y-3">
+                    <div class="glass p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-purple-400">
+                                <i class="ph ph-envelope-simple text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Email</p>
+                                <p class="text-sm font-medium">usuario@email.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-purple-400">
+                                <i class="ph ph-identification-card text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">CPF</p>
+                                <p class="text-sm font-medium">***.456.789-**</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-purple-400">
+                                <i class="ph ph-currency-circle-dollar text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Saldo Disponível</p>
+                                <p class="text-sm font-bold text-green-400">R$ 150,00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <button onclick="navigate('history')" class="w-full glass hover:bg-white/10 transition-colors p-4 rounded-xl flex items-center justify-between group mt-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                                <i class="ph ph-shopping-bag text-xl"></i>
+                            </div>
+                            <span class="font-medium text-gray-300 group-hover:text-white transition-colors">Meus Pedidos</span>
+                        </div>
+                        <i class="ph ph-caret-right text-gray-500 group-hover:text-white transition-colors"></i>
+                    </button>
+
+                    <button onclick="navigate('settings')" class="w-full glass hover:bg-white/10 transition-colors p-4 rounded-xl flex items-center justify-between group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 group-hover:bg-gray-500 group-hover:text-white transition-colors">
+                                <i class="ph ph-gear text-xl"></i>
+                            </div>
+                            <span class="font-medium text-gray-300 group-hover:text-white transition-colors">Configurações</span>
+                        </div>
+                        <i class="ph ph-caret-right text-gray-500 group-hover:text-white transition-colors"></i>
+                    </button>
+
+                    <button onclick="navigate('support')" class="w-full glass hover:bg-white/10 transition-colors p-4 rounded-xl flex items-center justify-between group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                                <i class="ph ph-headset text-xl"></i>
+                            </div>
+                            <span class="font-medium text-gray-300 group-hover:text-white transition-colors">Suporte / Fale Conosco</span>
+                        </div>
+                        <i class="ph ph-caret-right text-gray-500 group-hover:text-white transition-colors"></i>
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="screen-settings" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('profile')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Configurações</h2>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                <!-- Tema -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Preferências</h3>
+                    <div class="glass rounded-xl overflow-hidden">
+                        <div class="p-4 flex items-center justify-between border-b border-white/5">
+                            <div class="flex items-center space-x-3">
+                                <i class="ph ph-moon text-xl text-purple-400"></i>
+                                <span>Modo Escuro</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                            </label>
+                        </div>
+                        <div class="p-4 flex items-center justify-between border-b border-white/5">
+                            <div class="flex items-center space-x-3">
+                                <i class="ph ph-bell-ringing text-xl text-purple-400"></i>
+                                <span>Notificações</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                            </label>
+                        </div>
+                        <div class="p-4 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="ph ph-globe text-xl text-purple-400"></i>
+                                <span>Idioma</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-gray-400">
+                                <span>Português</span>
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conta -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Conta</h3>
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full p-4 flex items-center justify-between border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <div class="flex items-center space-x-3 text-red-400">
+                                <i class="ph ph-trash text-xl"></i>
+                                <span>Excluir Conta</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Screen -->
+        <div id="screen-support" class="hidden-screen flex-1 flex flex-col h-full z-20 bg-[#0b0914]">
+            <div class="p-6 glass border-b-0 flex items-center space-x-4">
+                <button onclick="navigate('profile')" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold">Suporte</h2>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                
+                <!-- Helper Text -->
+                <div class="text-center mb-4">
+                    <div class="w-16 h-16 rounded-full glass flex items-center justify-center mx-auto mb-3">
+                        <i class="ph ph-lifebuoy text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">Como podemos ajudar?</h3>
+                    <p class="text-xs text-gray-400 mt-1">Nossa equipe responderá em até 24 horas.</p>
+                </div>
+
+                <!-- Form -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider">Assunto</label>
+                        <div class="relative mt-1">
+                            <select class="w-full input-glass rounded-xl py-3 pl-4 pr-10 appearance-none focus:outline-none focus:border-purple-500 transition-colors text-gray-300">
+                                <option class="bg-gray-900 text-white">Problema com pagamento</option>
+                                <option class="bg-gray-900 text-white">Erro no download de jogo</option>
+                                <option class="bg-gray-900 text-white">Dúvida sobre reembolso</option>
+                                <option class="bg-gray-900 text-white">Outros</option>
+                            </select>
+                            <i class="ph ph-caret-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider">Mensagem</label>
+                        <textarea rows="4" placeholder="Descreva seu problema..." class="w-full input-glass rounded-xl py-3 px-4 mt-1 focus:outline-none focus:border-purple-500 transition-colors resize-none text-white"></textarea>
+                    </div>
+
+                    <button onclick="sendSupportMessage()" class="w-full btn-purple hover:opacity-90 text-white rounded-xl py-4 mt-2 font-bold text-lg transition-opacity flex items-center justify-center space-x-2">
+                        <i class="ph ph-paper-plane-tilt text-xl"></i>
+                        <span>Enviar Mensagem</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Modal -->
+        <div id="modal-search" class="hidden-screen absolute inset-0 bg-[#0b0914]/95 backdrop-blur-md z-50 flex flex-col">
+            <div class="p-6 flex items-center space-x-4">
+                <div class="flex-1 relative">
+                    <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                    <input type="text" placeholder="Buscar jogos..." class="w-full glass bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-purple-500 transition-colors text-white">
+                </div>
+                <button onclick="closeSearch()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 p-6">
+                <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Buscas Recentes</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">RPG</span>
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">Cyber</span>
+                    <span class="px-3 py-1 glass rounded-full text-sm text-gray-300">Ação</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openSearch() {
+            document.getElementById('modal-search').classList.remove('hidden-screen');
+        }
+
+        function closeSearch() {
+            document.getElementById('modal-search').classList.add('hidden-screen');
+        }
+
+        function navigate(screenId) {
+            // Esconde todas as telas
+            document.querySelectorAll('div[id^="screen-"]').forEach(el => {
+                el.classList.add('hidden-screen');
+            });
+            // Mostra a tela desejada
+            document.getElementById('screen-' + screenId).classList.remove('hidden-screen');
+        }
+
+        function openGameDetails(title, price, category, desc) {
+            document.getElementById('detail-title').innerText = title;
+            document.getElementById('detail-price').innerText = price;
+            document.getElementById('detail-category').innerText = category;
+            document.getElementById('detail-desc').innerText = desc;
+            navigate('details');
+        }
+
+        function finishCheckout() {
+            // Simulando finalização
+            document.getElementById('modal-success').classList.remove('hidden-screen');
+        }
+
+        function closeSuccessAndGoHome() {
+            document.getElementById('modal-success').classList.add('hidden-screen');
+            navigate('catalog');
+        }
+
+        function sendSupportMessage() {
+            alert('Mensagem enviada com sucesso! Nossa equipe entrará em contato.');
+            navigate('profile');
+        }
+    </script>
+</body>
+</html>
