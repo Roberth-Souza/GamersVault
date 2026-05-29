@@ -67,6 +67,19 @@ O banco central relacional se chama `gamers_vault` e é moldado da seguinte form
 
 ---
 
+## 🌐 Protótipo Web (UI/UX)
+
+Além do núcleo em Python/CLI do sistema, projetamos um **protótipo em html** demonstrativo em formato Web para ilustrar como seria a experiência final do nosso cliente. 
+
+O protótipo é construído com a tela do smartphone em mente. O objetivo é permitir simular as transições, os menus de configurações, o painel de perfil e a jornada completa de e-commerce!
+
+Você pode testar e navegar pelo resultado desse protótipo renderizado em tempo real pelo GitHub Pages:
+👉 **[Acessar e Testar Protótipo Web - Gamers Vault](https://roberth-souza.github.io/GamersVault/)**
+
+👉 **Para mais informações detalhadas sobre as escolhas de design, fluxos e wireframes, leia a [documentação do protótipo aqui](docs/02.5-prototipo.md).**
+
+---
+
 ## ⚙️ Como Instalar e Rodar
 
 **1. Clone/Baixe este projeto.**
@@ -111,3 +124,9 @@ python main.py
 ## 👥 Desenvolvido por
 
 Grupo 128 — Projeto acadêmico para EXPOTECH 2026, 1º período de Ciência da Computação.
+
+---
+
+## ⚠️ Aviso Legal (Disclaimer)
+
+A **Gamers Vault** não é uma loja real. Trata-se exclusivamente de um projeto acadêmico e uma simulação de e-commerce criado para fins educacionais. O sistema não aceita métodos de pagamento de verdade, não coleta dados financeiros reais e não comercializa nenhum tipo de produto verdadeiro.
