@@ -9,6 +9,8 @@ Para um entendimento profundo da arquitetura, validações (Fail-fast/Regex), re
 
 👉 **Para explorar os detalhes técnicos, leia a documentação completa aqui: [Acessar Índice de Documentação](docs/00-index.md)**
 
+**Para ver como o projeto foi desenvolvido visualmente, consulte também nosso [Board de Design no Miro 🎨](https://miro.com/welcomeonboard/bGVBOWVSd1o3VUZpYk1PeHJUUm91NldPUFN5UFRjYzhNcVRQZGJpWDBzWURMSDRpV1VaaGNUUmVXMEFrcXVIUk5tWkY4SDE5WHN6bVFxSFIrUU5PaXlCSkU3ZGZWQzlVdGdDTG9CS2VmaGJBUUJQWjkvYWZFVFF5aThsRWRmZTVQdGo1ZEV3bUdPQWRZUHQzSGl6V2NBPT0hdjE=?share_link_id=73011862892)**.
+
 ---
 
 ## 🚀 Funcionalidades
